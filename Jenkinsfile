@@ -1,6 +1,6 @@
 pipeline {
-    dockerfile true,
-    agent { 
+    agent {
+      dockerfile true,
       dockerfile {
         args '--entrypoint=\'\''
       }
