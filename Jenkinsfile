@@ -1,5 +1,7 @@
 pipeline {
-    agent { dockerfile true }
+    agent { 
+      args '--entrypoint=\'\''
+    }
     stages {
         stage('Test') {
             steps {
