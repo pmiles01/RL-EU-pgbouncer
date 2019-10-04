@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Vulnerability Scanner') {
             steps {
-                aquaMicroscanner imageName: 'pgbouncer/pgbouncer', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
+                aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
     }
