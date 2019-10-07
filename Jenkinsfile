@@ -29,7 +29,7 @@ pipeline {
             stage('Test') {
                 steps {
                     println parseJsonFile()
-                    sh 'docker build . -t repoName'
+                    sh 'docker build . -t repoName:${version}'
                 }
             }
             stage('Vulnerability Scanner') {
