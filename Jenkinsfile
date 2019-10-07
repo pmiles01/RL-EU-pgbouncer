@@ -17,9 +17,7 @@ def docker_repository(build_properties) {
   return "docker_repository"
 }  
  
-    def buildProperties = readFile( 'build.properties' )
-    def slurper = new groovy.json.JsonSlurper()
-    slurper.parse(buildProperties)
+    def slurper = new groovy.json.JsonSlurper().parseText(readFile('build.properties'))
     
 pipeline {
     agent any
