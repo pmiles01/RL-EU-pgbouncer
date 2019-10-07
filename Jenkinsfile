@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 pipeline {
-    agent {
+    agent any
         stages {
             stage('Test') {
                 steps {
@@ -14,5 +14,4 @@ pipeline {
                 }
             }
         }
-    }
 }
