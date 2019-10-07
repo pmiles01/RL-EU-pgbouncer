@@ -3,8 +3,8 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties")
-                    repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties")
+                    def repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties")
+                    def repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties")
                     sh "docker build . -t ${repoName}"
                 }
             }
