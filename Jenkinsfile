@@ -4,6 +4,7 @@ import groovy.json.JsonSlurper
 def propertiesFile = 'build.properties'
 
 def version(build_properties) {
+  sh "jq -r '.version' ${propertiesFile}"
   return "version"
 }
 
@@ -27,7 +28,7 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    println parseJsonFile().name
+                    println parseJsonFile()
                     sh 'docker build . -t repoName'
                 }
             }
