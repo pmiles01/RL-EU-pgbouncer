@@ -18,18 +18,18 @@ def docker_repository(build_properties) {
 }
 
 @NonCPS
-  def parseJsonFile(String filename) {
-    final slurper = new groovy.json.JsonSlurperClassic()
-    return new HashMap<>(slurper.parseText(readFile('build.properties')))
-  }
+def parseJsonFile(String filename) {
+  final slurper = new groovy.json.JsonSlurperClassic()
+  return new HashMap<>(slurper.parseText(readFile('build.properties')))
+}
 
 pipeline {
     agent any
         stages {
             stage('Test') {
                 steps {
-println parseJsonFile('build.properties')
-                    sh 'docker build . -t test:latest'
+                    def buildProperty = parseJsonFile('build.properties')
+                    sh 'docker build . -t ${buildProperty{"name"}:${buildProperty{"version"}'
                 }
             }
             stage('Vulnerability Scanner') {
