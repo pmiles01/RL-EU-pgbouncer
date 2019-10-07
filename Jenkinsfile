@@ -24,7 +24,8 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    sh "docker build . -t repoName():repoVersion()"
+                    def imageName = repoName()+":"+repoVersion()
+                    sh "docker build . -t ${imageName}"
                 }
             }
             stage('Vulnerability Scanner') {
