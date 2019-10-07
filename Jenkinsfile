@@ -17,9 +17,9 @@ def docker_repository(build_properties) {
   return "docker_repository"
 }  
  
+node {
     def slurper = new groovy.json.JsonSlurper().parseText(readFile('build.properties'))
     
-node {
 
         stage('Test') {
             steps {
