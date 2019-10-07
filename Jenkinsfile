@@ -17,6 +17,7 @@ def docker_repository(build_properties) {
   return "docker_repository"
 }
 
+@NonCPS
   def parseJsonFile(String filename) {
     final slurper = new groovy.json.JsonSlurperClassic()
     return new HashMap<>(slurper.parseText(readFile('build.properties')))
