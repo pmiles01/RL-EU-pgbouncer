@@ -19,19 +19,11 @@ def docker_repository(build_properties) {
   return "docker_repository"
 }
 
-@NonCPS
-def parseJsonFile() {
-  final slurper = new groovy.json.JsonSlurperClassic()
-  return slurper.parseText(readFile('build.properties'))
-}
-
-
 pipeline {
     agent any
         stages {
             stage('Test') {
                 steps {
-                    println parseJsonFile()
                     sh "docker build . -t repoName():repoVersion()"
                 }
             }
