@@ -1,6 +1,6 @@
 pipeline {
    environment {
-       repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties")
+       repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").toLowerCase()
        repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties")
    }
 
@@ -8,7 +8,7 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    sh "docker build . -t ${repoName}"
+                    sh "docker build . -t ${repoName}:${repoVersion}"
                 }
             }
             stage('Vulnerability Scanner') {
