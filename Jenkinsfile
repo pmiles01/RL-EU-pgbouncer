@@ -3,10 +3,6 @@ import groovy.json.JsonSlurper
 
 def propertiesFile = 'build.properties'
 
-def repoName(build_properties) {
-  return "name"
-}
-
 def version(build_properties) {
   return "version"
 }
@@ -25,7 +21,7 @@ def parseJsonFile(String filename) {
   return new HashMap<>(slurper.parseText(readFile($filename)))
 }
 
-@Field String repoName = repoName(parseJsonFile(${PropertiesFile}))
+def repoName = parseJsonFile(${PropertiesFile}).name
 
 
 pipeline {
