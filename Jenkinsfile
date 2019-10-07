@@ -18,13 +18,13 @@ def git_repository(build_properties) {
 def docker_repository(build_properties) {
   return "docker_repository"
 }
+                    def imageName = repoName()+":"+repoVersion()
 
 pipeline {
     agent any
         stages {
             stage('Test') {
                 steps {
-                    def imageName = repoName()+":"+repoVersion()
                     sh "docker build . -t ${imageName}"
                 }
             }
