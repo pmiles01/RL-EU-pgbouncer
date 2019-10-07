@@ -1,14 +1,11 @@
 import groovy.json.JsonSlurper
 
-def propertiesFile = 'build.properties'
-
-
 def repoName() {
-  return sh(returnStdout: true, script: "jq -r '.name' ${propertiesFile}")
+  return sh(returnStdout: true, script: "jq -r '.name' build.properties")
 }
 
 def repoVersion() {
-  return sh(returnStdout: true, script: "jq -r '.version' ${propertiesFile}")
+  return sh(returnStdout: true, script: "jq -r '.version' $build.properties")
 }
 
 def git_repository(build_properties) {
