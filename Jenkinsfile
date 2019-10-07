@@ -18,10 +18,8 @@ def docker_repository(build_properties) {
 @NonCPS
 def parseJsonFile() {
   final slurper = new groovy.json.JsonSlurperClassic()
-  return new HashMap<>(slurper.parseText(readFile('build.properties')))
+  return slurper.parseText(readFile('build.properties'))
 }
-
-def repoName = parseJsonFile().name
 
 
 pipeline {
@@ -29,7 +27,7 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    println parseJsonFile('build.properties')
+                    println parseJsonFile()
                     sh 'docker build . -t repoName'
                 }
             }
