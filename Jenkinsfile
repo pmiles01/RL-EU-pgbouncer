@@ -28,7 +28,6 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-println(name(slurper))
                     sh 'docker build . -t test:latest'
                 }
             }
