@@ -3,7 +3,6 @@ import groovy.json.JsonSlurper
 pipeline {
     agent any
 
-node {
     def rootDir = pwd()
     def code = load "${rootDir}@script/library.Groovy "
 
