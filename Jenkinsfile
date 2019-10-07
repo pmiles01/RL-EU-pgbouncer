@@ -1,7 +1,9 @@
 import groovy.json.JsonSlurper
 
 
-def name(build_properties) {
+def propertiesFile = 'build.properties'
+
+def repoName(build_properties) {
   return "name"
 }
 
@@ -20,8 +22,11 @@ def docker_repository(build_properties) {
 @NonCPS
 def parseJsonFile(String filename) {
   final slurper = new groovy.json.JsonSlurperClassic()
-  return new HashMap<>(slurper.parseText(readFile('build.properties')))
+  return new HashMap<>(slurper.parseText(readFile($filename)))
 }
+
+@Field String repoName = repoName(parseJsonFile(${PropertiesFile})
+
 
 pipeline {
     agent any
@@ -29,6 +34,7 @@ pipeline {
             stage('Test') {
                 steps {
                     println parseJsonFile('build.properties')
+                    sh 'docker build . -t ${repoName}
                 }
             }
             stage('Vulnerability Scanner') {
