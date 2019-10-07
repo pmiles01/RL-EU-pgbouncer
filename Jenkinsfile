@@ -23,16 +23,20 @@ def docker_repository(build_properties) {
   }
     
 
-node {
-        stage('Test') {
-            steps {
+pipeline {
+    agent {
+        stages {
+            stage('Test') {
+                steps {
 println(name(slurper))
-                sh 'docker build . -t test:latest'
+                    sh 'docker build . -t test:latest'
+                }
+            }
+            stage('Vulnerability Scanner') {
+                steps {
+                    aquaMicroscanner imageName: 'test:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
+                }
             }
         }
-        stage('Vulnerability Scanner') {
-            steps {
-                aquaMicroscanner imageName: 'test:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
-            }
-        }
+    }
 }
