@@ -30,7 +30,7 @@ pipeline {
             stage('Test') {
                 steps {
                     println parseJsonFile('build.properties')
-                    sh 'docker build . -t ${repoName}'
+                    sh 'docker build . -t repoName'
                 }
             }
             stage('Vulnerability Scanner') {
