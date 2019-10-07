@@ -17,13 +17,13 @@ def docker_repository(build_properties) {
   return "docker_repository"
 }  
  
-node {
   def parseJsonFile(String filename) {
     final slurper = new groovy.json.JsonSlurperClassic()
     return new HashMap<>(slurper.parseText(readFile('build.properties')))
   }
     
 
+node {
         stage('Test') {
             steps {
 println(name(slurper))
