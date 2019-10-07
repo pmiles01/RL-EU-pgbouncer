@@ -29,7 +29,7 @@ pipeline {
             stage('Test') {
                 steps {
                     def buildProperty = parseJsonFile('build.properties')
-                    sh 'docker build . -t ${buildProperty{"name"}:${buildProperty{"version"}'
+                    sh 'docker build . -t version("hello")'
                 }
             }
             stage('Vulnerability Scanner') {
