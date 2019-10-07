@@ -28,7 +28,7 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    println parseJsonFile('build.properties').name
+                    println parseJsonFile('build.properties')
                     sh 'docker build . -t version("hello")'
                 }
             }
