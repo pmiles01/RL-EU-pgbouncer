@@ -1,23 +1,5 @@
 import groovy.json.JsonSlurper
 
-
-def name(build_properties) {
-  return "name"
-}
- 
-def version(build_properties) {
-  return "version"
-}
- 
-def git_repository(build_properties) {
-  return "git_repository"
-}
- 
-def docker_repository(build_properties) {
-  return "docker_repository"
-}  
-    
-
 pipeline {
     agent {
         stages {
