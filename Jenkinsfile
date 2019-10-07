@@ -3,11 +3,11 @@ import groovy.json.JsonSlurper
 def propertiesFile = 'build.properties'
 
 
-def repoName(String propertiesFile) {
+def repoName() {
   return sh(returnStdout: true, script: "jq -r '.name' ${propertiesFile}")
 }
 
-def repoVersion(String propertiesFile) {
+def repoVersion() {
   return sh(returnStdout: true, script: "jq -r '.version' ${propertiesFile}")
 }
 
