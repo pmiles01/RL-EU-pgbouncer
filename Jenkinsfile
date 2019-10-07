@@ -1,13 +1,13 @@
 import groovy.json.JsonSlurper
 
-
 def propertiesFile = 'build.properties'
+
 
 def repoName(String propertiesFile) {
   return sh(returnStdout: true, script: "jq -r '.name' ${propertiesFile}")
 }
 
-def version(String propertiesFile) {
+def repoVersion(String propertiesFile) {
   return sh(returnStdout: true, script: "jq -r '.version' ${propertiesFile}")
 }
 
@@ -32,7 +32,7 @@ pipeline {
             stage('Test') {
                 steps {
                     println parseJsonFile()
-                    sh "docker build . -t ${repoName}:${version}"
+                    sh "docker build . -t repoName():repoVersion()"
                 }
             }
             stage('Vulnerability Scanner') {
