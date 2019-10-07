@@ -29,7 +29,6 @@ pipeline {
             stage('Test') {
                 steps {
                     println parseJsonFile('build.properties')
-                    sh 'docker build . -t version("hello")'
                 }
             }
             stage('Vulnerability Scanner') {
