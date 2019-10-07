@@ -4,12 +4,12 @@ pipeline {
     agent any
 
     def rootDir = pwd()
-    def code = load "${rootDir}@script/library.Groovy "
+    def code = load "${rootDir}@script/library.Groovy"
 
+    stages {
   stage('Execute') {
     code.example1()
   }
-    stages {
         stage('Test') {
             steps {
                 sh 'jq ".name" -r build.properties'
