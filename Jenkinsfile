@@ -1,18 +1,32 @@
 import groovy.json.JsonSlurper
 
+
+def name(build_properties) {
+  return "name"
+}
+ 
+def version(build_properties) {
+  return "version"
+}
+ 
+def git_repository(build_properties) {
+  return "git_repository"
+}
+ 
+def docker_repository(build_properties) {
+  return "docker_repository"
+}  
+ 
+    def slurper = new groovy.json.JsonSlurper()
+    slurper.parse(new File('build.properties'))
+    
 pipeline {
     agent any
 
-    def rootDir = pwd()
-    def code = load "${rootDir}@script/library.Groovy"
-
     stages {
-  stage('Execute') {
-    code.example1()
-  }
         stage('Test') {
             steps {
-                sh 'jq ".name" -r build.properties'
+println(name(slurper))
                 sh 'docker build . -t test:latest'
             }
         }
