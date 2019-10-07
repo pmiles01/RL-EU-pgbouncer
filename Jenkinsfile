@@ -19,10 +19,8 @@ def docker_repository(build_properties) {
  
     def slurper = new groovy.json.JsonSlurper().parseText(readFile('build.properties'))
     
-pipeline {
-    agent any
+node {
 
-    stages {
         stage('Test') {
             steps {
 println(name(slurper))
@@ -34,5 +32,4 @@ println(name(slurper))
                 aquaMicroscanner imageName: 'test:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
             }
         }
-    }
 }
