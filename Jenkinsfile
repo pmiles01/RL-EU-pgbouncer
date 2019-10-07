@@ -18,7 +18,7 @@ def docker_repository(build_properties) {
 @NonCPS
 def parseJsonFile(String filename) {
   final slurper = new groovy.json.JsonSlurperClassic()
-  return new HashMap<>(slurper.parseText(readFile($filename)))
+  return new HashMap<>(slurper.parseText(readFile(${filename})))
 }
 
 def repoName = parseJsonFile(${propertiesFile}).name
