@@ -1,7 +1,7 @@
 pipeline {
    environment {
-       repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").toLowerCase()
-       repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties")
+       repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").trim().toLowerCase()
+       repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties").trim()
    }
 
     agent any
