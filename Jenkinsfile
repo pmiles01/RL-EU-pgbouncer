@@ -25,7 +25,7 @@ def parseJsonFile(String filename) {
   return new HashMap<>(slurper.parseText(readFile($filename)))
 }
 
-@Field String repoName = repoName(parseJsonFile(${PropertiesFile})
+@Field String repoName = repoName(parseJsonFile(${PropertiesFile}))
 
 
 pipeline {
