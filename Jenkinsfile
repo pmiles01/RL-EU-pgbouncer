@@ -1,14 +1,16 @@
+import groovy.json.JsonSlurper
+
 pipeline {
     agent any
-    stages {
 
-  stage('Load') {
-    code = load 'example.groovy'
-  }
+node {
+    def rootDir = pwd()
+    def code = load "${rootDir}@script/library.Groovy "
 
   stage('Execute') {
     code.example1()
   }
+    stages {
         stage('Test') {
             steps {
                 sh 'jq ".name" -r build.properties'
