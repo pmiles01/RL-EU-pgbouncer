@@ -27,7 +27,7 @@ pipeline {
         stages {
             stage('Test') {
                 steps {
-                    println parseJsonFile()
+                    println parseJsonFile().name
                     sh 'docker build . -t repoName'
                 }
             }
