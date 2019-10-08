@@ -16,5 +16,10 @@ pipeline {
                     aquaMicroscanner imageName: 'test:latest', notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html'
                 }
             }
+            stage('Package Helm Chart') {
+                steps {
+                    sh "docker run -ti --rm -v $(pwd):/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package ${repoName}"
+                }
+            }
         }
 }
