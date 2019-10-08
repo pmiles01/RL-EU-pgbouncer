@@ -1,3 +1,7 @@
+  def mysh(cmd) {
+    println (cmd)
+    sh('#!/bin/sh -e\n' + cmd)
+  }
 pipeline {
   environment {
        repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").trim().toLowerCase()
@@ -9,10 +13,6 @@ pipeline {
 
     stage('Test') {
        steps {
-  def mysh(cmd) {
-    println (cmd)
-    sh('#!/bin/sh -e\n' + cmd)
-  }
 
                     mysh "docker build . -t ${repoName}:${repoVersion}"
                 }
