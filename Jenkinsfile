@@ -18,7 +18,7 @@ pipeline {
             }
             stage('Package Helm Chart') {
                 steps {
-                    sh "docker run -ti --rm -v $(pwd):/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package ${repoName}"
+                    sh "docker run -ti --rm -v \$(pwd):/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package ${repoName}"
                 }
             }
         }
