@@ -32,7 +32,7 @@ pipeline {
       steps {
         mysh "gcloud config set project rl-global-eu"
         mysh "echo y | gcloud auth configure-docker"
-        mysh "docker push gcr.io/rl-global-eu/${repoName}:${repoVersion}"
+        mysh "docker push gcr.io/rl-global-eu/${repoName}"
       }
     }
 
