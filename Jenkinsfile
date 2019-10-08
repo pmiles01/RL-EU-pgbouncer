@@ -4,13 +4,14 @@ pipeline {
        repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties").trim()
    }
 
+  agent any
+  stages {
+
   def mysh(cmd) {
     println (cmd)
     sh('#!/bin/sh -e\n' + cmd)
   }
 
-  agent any
-        stages {
             stage('Test') {
                 steps {
                     mysh "docker build . -t ${repoName}:${repoVersion}"
