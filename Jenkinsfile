@@ -30,8 +30,8 @@ pipeline {
     }
     stage('Push to Repository') {
       steps {
-        mysh "gcloud config set project rl-global-eu"
-        mysh "gcloud auth activate-service-account --project=someproject --key-file=~/.gcp/key.json"
+        mysh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
+        mysh "#gcloud config set project rl-global-eu"
         mysh "echo y | gcloud auth configure-docker"
         mysh "docker push gcr.io/rl-global-eu/${repoName}"
 
