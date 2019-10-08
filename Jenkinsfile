@@ -7,13 +7,13 @@ pipeline {
   agent any
   stages {
 
-            stage('Test') {
+    stage('Test') {
+       steps {
   def mysh(cmd) {
     println (cmd)
     sh('#!/bin/sh -e\n' + cmd)
   }
 
-                steps {
                     mysh "docker build . -t ${repoName}:${repoVersion}"
                 }
             }
