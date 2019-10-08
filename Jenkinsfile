@@ -18,7 +18,7 @@ pipeline {
             }
             stage('Package Helm Chart') {
                 steps {
-                    sh "docker run --rm --entrypoint "/bin/sh" -v \$(pwd)/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm -c "helm init && helm package ${repoName}"
+                    sh "docker run --rm --entrypoint \"/bin/sh\" -v \$(pwd)/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm -c \"helm init && helm package ${repoName}\""
                 }
             }
         }
