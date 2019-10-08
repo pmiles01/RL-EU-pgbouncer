@@ -14,6 +14,7 @@ pipeline {
 
     stage('Docker Build') {
       steps {
+        mysh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
         mysh "docker build . -t ${repoName}:${repoVersion}"
         mysh "docker tag ${repoName} gcr.io/rl-global-eu/${repoName}:${repoVersion}"
       }
@@ -30,7 +31,6 @@ pipeline {
     }
     stage('Push to Repository') {
       steps {
-        mysh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
         mysh "#gcloud config set project rl-global-eu"
         mysh "echo y | gcloud auth configure-docker"
         mysh "docker push gcr.io/rl-global-eu/${repoName}"
