@@ -1,14 +1,19 @@
 pipeline {
-   environment {
+  environment {
        repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").trim().toLowerCase()
        repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties").trim()
    }
 
-    agent any
+  def mysh(cmd) {
+    println (cmd)
+    sh('#!/bin/sh -e\n' + cmd)
+  }
+
+  agent any
         stages {
             stage('Test') {
                 steps {
-                    sh "docker build . -t ${repoName}:${repoVersion}"
+                    mysh "docker build . -t ${repoName}:${repoVersion}"
                 }
             }
             stage('Vulnerability Scanner') {
@@ -18,7 +23,7 @@ pipeline {
             }
             stage('Package Helm Chart') {
                 steps {
-                    sh "docker run --rm --entrypoint \"/bin/sh\" -v \$(pwd)/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm -c \"helm init --client-only && helm package ${repoName}\""
+                    mysh "docker run --rm --entrypoint \"/bin/sh\" -v \$(pwd)/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm -c \"helm init --client-only && helm package ${repoName}\""
                 }
             }
         }
