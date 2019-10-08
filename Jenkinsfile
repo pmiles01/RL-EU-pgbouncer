@@ -15,7 +15,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         mysh "docker build . -t ${repoName}:${repoVersion}"
-        mysh "docker tag ${repoName} gcr.io/1036336272355/${repoName}:${repoVersion}"
+        mysh "docker tag ${repoName} gcr.io/rl-global-eu/${repoName}:${repoVersion}"
       }
     }
     stage('Vulnerability Scanner') {
@@ -31,7 +31,8 @@ pipeline {
     stage('Push to Repository') {
       steps {
         mysh "echo y | gcloud auth configure-docker"
-        mysh "docker push gcr.io/1036336272355/${repoName}:${repoVersion}"
+        mysh "gcloud config set project rl-global-eu"
+        mysh "docker push gcr.io/rl-global-eu/${repoName}:${repoVersion}"
       }
     }
 
