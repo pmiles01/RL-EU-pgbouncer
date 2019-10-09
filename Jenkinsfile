@@ -7,6 +7,11 @@ def silentSH(cmd) {
   sh('#!/bin/sh -e\n' + cmd)
 }
 
+def deployHelmChart(environment) {
+  sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl \"helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com\""
+  sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
+}
+
 pipeline {
   environment {
     repoName = sh(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
@@ -29,6 +34,7 @@ pipeline {
     }
     stage('Package and Push Helm Chart') {
       steps {
+        sh "ln -s \${WORKSPACE}/helm \${WORKSPACE}/helm/\${repoName}"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm init --client-only"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package \${repoName}"
         sh "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
@@ -50,8 +56,7 @@ pipeline {
     stage('Deploy to All Dev environments') {
       steps {
         sh "mkdir -p \${WORKSPACE}/helm_config"
-        sh "docker -v \${WORKSPACE}/kubeconfig/dev02:/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com"
-        sh "docker -v \${WORKSPACE}/kubeconfig/dev02:/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
+        deployHelmChart('dev02')
       }
     }
   }
