@@ -31,11 +31,12 @@ pipeline {
         mysh "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
         mysh "docker run --rm -v \${WORKSPACE}/helm_repo:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm repo index /apps --url https://rl-helm.storage.googleapis.com"
         mysh "#docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json google/cloud-sdk gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json"
+
         mysh "echo '/bin/sh' > \${WORKSPACE}/sync_repo.sh"
         mysh "echo 'gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json' >> \${WORKSPACE}/sync_repo.sh"
         mysh "echo 'gsutil -m rsync -r /mnt/ gs://rl-helm' >> \${WORKSPACE}/sync_repo.sh"
-        mysh "chmod 755 \${WORKSPACE}/sync_repo.sh
-        mysh "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/sync_repo.sh:/sync_repo.sh -v \${WORKSPACE}/helm_repo:/mnt google/cloud-sdk /sync_repo.sh
+        mysh "chmod 755 \${WORKSPACE}/sync_repo.sh"
+        mysh "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/sync_repo.sh:/sync_repo.sh -v \${WORKSPACE}/helm_repo:/mnt google/cloud-sdk /sync_repo.sh"
       }
     }
     stage('Push Container Image to Repository') {
