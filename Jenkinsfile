@@ -34,7 +34,7 @@ pipeline {
     }
     stage('Package and Push Helm Chart') {
       steps {
-        sh "ln -s \${WORKSPACE}/helm \${WORKSPACE}/helm/\${repoName}"
+        sh "ln -s helm helm/\${repoName}"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm init --client-only"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package \${repoName}"
         sh "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
