@@ -5,8 +5,8 @@
 
 pipeline {
   environment {
-       repoName = sh(returnStdout: true, script: "jq -r '.name' build.properties").trim().toLowerCase()
-       repoVersion = sh(returnStdout: true, script: "jq -r '.version' build.properties").trim()
+       repoName = sh(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
+       repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
    }
 
   agent any
