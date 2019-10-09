@@ -31,7 +31,7 @@ pipeline {
         mysh "mkdir -p \$(pwd)/helm_repo && cp \$(pwd)/helm/\${repoName}-\${repoVersion}.tgz \$(pwd)/helm_repo"
         mysh "docker run --rm -v \$(pwd)/helm_repo:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm repo index /apps --url https://rl-helm.storage.googleapis.com"
         mysh "#docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json google/cloud-sdk gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json"
-        mysh "docker run --rm -v ~/.config/gcloud:/root/.config/gcloud -v \$(pwd)/helm_repo:/apps google/cloud-sdk gsutil -m rsync -r /apps/ gs://rl-helm"
+        mysh "docker run --rm -v \$(pwd)/helm_repo:/apps google/cloud-sdk gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json && gsutil -m rsync -r /apps/ gs://rl-helm"
       }
     }
     stage('Push Container Image to Repository') {
