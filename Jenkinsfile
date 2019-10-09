@@ -9,8 +9,10 @@ def silentSH(cmd) {
 
 pipeline {
   environment {
-    repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
-    repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
+#    repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
+#    repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
+    repoName = silentSH(returnStdout: true, script: "echo hello")
+    repoVersion = silentSH(returnStdout: true, script: "echo 1.2.3")
   }
 
   agent any
