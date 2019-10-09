@@ -28,7 +28,7 @@ pipeline {
       steps {
         mysh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm init --client-only"
         mysh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm package \${repoName}"
-        mysh "mkdir -p "\${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
+        mysh "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
         mysh "docker run --rm -v \${WORKSPACE}/helm_repo:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm alpine/helm repo index /apps --url https://rl-helm.storage.googleapis.com"
         mysh "#docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json google/cloud-sdk gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json"
         mysh "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/helm_repo:/apps google/cloud-sdk gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json && gsutil -m rsync -r /apps/ gs://rl-helm"
