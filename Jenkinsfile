@@ -9,13 +9,12 @@ def silentSH(cmd) {
 
 pipeline {
   environment {
-       repoName = sh(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
-       repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
-   }
+    repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
+    repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
+  }
 
   agent any
   stages {
-
     stage('Docker Build') {
       steps {
         verboseSH "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
@@ -46,6 +45,13 @@ pipeline {
       steps {
         verboseSH "echo y | gcloud auth configure-docker"
         verboseSH "docker push gcr.io/rl-global-eu/${repoName}"
+      }
+    }
+    stage('Deploy to All Dev environments') {
+      steps {
+        silentSH "mkdir -p \${WORKSPACE}/helm_config"
+        verboseSH "docker -v \${WORKSPACE}/kubeconfig/dev02:/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com"
+        verboseSH "docker -v \${WORKSPACE}/kubeconfig/dev02:/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
       }
     }
   }
