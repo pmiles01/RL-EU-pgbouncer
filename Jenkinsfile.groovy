@@ -1,9 +1,9 @@
-def sh(cmd) {
+def verboseSH(cmd) {
   println (cmd)
   sh('#!/bin/sh -e\n' + cmd)
 }
 
-def sh(cmd) {
+def silentSH(cmd) {
   sh('#!/bin/sh -e\n' + cmd)
 }
 
