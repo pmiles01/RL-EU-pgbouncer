@@ -44,7 +44,7 @@ pipeline {
     stage('Push Container Image to Repository') {
       steps {
         verboseSH "echo y | gcloud auth configure-docker"
-        verboseSH "docker push gcr.io/rl-global-eu/${repoName}"
+        verboseSH "docker push gcr.io/rl-global-eu/${repoName}:${repoVersion}"
       }
     }
     stage('Deploy to All Dev environments') {
