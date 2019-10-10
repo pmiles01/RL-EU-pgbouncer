@@ -68,7 +68,7 @@ pipeline {
     }
     stage('Push Container Image to Repository') {
       steps {
-        PushContainer("${repoName}", "${repoVersion}")
+        pushContainer("${repoName}", "${repoVersion}")
       }
     }
     stage('Deploy to All Dev environments') {
