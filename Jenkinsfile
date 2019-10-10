@@ -32,9 +32,17 @@ def packageHelmChart() {
 def buildContainer(repoName, repoVersion) {
   sh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
   sh "docker build . -t "+ repoName + ":"+ repoVersion
-  sh "docker tag " + repoName + " gcr.io/rl-global-eu/"+ repoName + ":" + repoVerson
+  sh "docker tag " + repoName + " gcr.io/rl-global-eu/"+ repoName + ":" + repoVersion
   return
 }
+
+
+def pushContainer(repoName, repoVersion) {
+    paulrepoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+  sh "echo y | gcloud auth configure-docker"
+  sh "docker push gcr.io/rl-global-eu/"+ paulrepoName + ":" + repoVersion
+}
+
 
 pipeline {
   environment {
@@ -61,13 +69,11 @@ pipeline {
     }
     stage('Push Container Image to Repository') {
       steps {
-        sh "echo y | gcloud auth configure-docker"
-        sh "docker push gcr.io/rl-global-eu/${repoName}:${repoVersion}"
+        defPushContainer("${repoName}", "${repoVersion}"
       }
     }
     stage('Deploy to All Dev environments') {
       steps {
-        sh "mkdir -p \${WORKSPACE}/helm_config"
         deployHelmChart('dev02')
       }
     }
