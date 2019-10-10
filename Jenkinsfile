@@ -69,7 +69,7 @@ pipeline {
     }
     stage('Push Container Image to Repository') {
       steps {
-        defPushContainer("${repoName}", "${repoVersion}"
+        defPushContainer("${repoName}", "${repoVersion}")
       }
     }
     stage('Deploy to All Dev environments') {
