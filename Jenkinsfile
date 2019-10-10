@@ -41,7 +41,7 @@ pipeline {
   stages {
     stage('Docker Build') {
       steps {
-        buildContainer(${repoName}, ${repoVersion})
+        buildContainer("${repoName}", "${repoVersion}")
       }
     }
     stage('Vulnerability Scanner') {
