@@ -14,8 +14,8 @@ def deployHelmChart(environment) {
 
 pipeline {
   environment {
-    repoName = sh(returnStdout: true, script: "yq -r '.name' helm/Chart.yaml").trim().toLowerCase()
-    repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/Chart.yaml").trim()
+    repoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+    repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
   }
 
   agent any
