@@ -26,7 +26,6 @@ def packageHelmChart() {
   sh "echo 'gsutil -m rsync /helm_repo gs://rl-helm' >> \${WORKSPACE}/sync_repo.sh"
   sh "chmod 755 \${WORKSPACE}/sync_repo.sh"
   sh "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/sync_repo.sh:/sync_repo.sh -v \${WORKSPACE}/helm_repo:/helm_repo google/cloud-sdk /sync_repo.sh"
-  return
 }
 
 def buildContainer(repoName, repoVersion) {
@@ -69,7 +68,7 @@ pipeline {
     }
     stage('Push Container Image to Repository') {
       steps {
-        defPushContainer("${repoName}", "${repoVersion}")
+        PushContainer("${repoName}", "${repoVersion}")
       }
     }
     stage('Deploy to All Dev environments') {
