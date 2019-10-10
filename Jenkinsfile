@@ -28,8 +28,8 @@ def packageHelmChart() {
 }
 
 def buildContainer() {
-  repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
-  repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
+  repoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+  repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
 
   sh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
   sh "docker build . -t "+ repoName + ":"+ repoVersion
@@ -38,8 +38,8 @@ def buildContainer() {
 
 
 def pushContainer() {
-  repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
-  repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
+  repoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+  repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
 
   sh "echo y | gcloud auth configure-docker"
   sh "docker push gcr.io/rl-global-eu/"+ repoName + ":" + repoVersion
