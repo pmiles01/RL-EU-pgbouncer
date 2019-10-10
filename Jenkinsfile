@@ -10,8 +10,8 @@ def silentSH(cmd) {
 }
 
 def deployHelmChart(environment) {
-  sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl \"helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com\""
-  sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
+  silentSH "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl \"helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com\""
+  silentSH "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
 }
 
 def packageHelmChart() {
@@ -28,8 +28,8 @@ def packageHelmChart() {
 }
 
 def buildContainer() {
-  repoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
-  repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
+  repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+  repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
 
   sh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
   sh "docker build . -t "+ repoName + ":"+ repoVersion
@@ -38,8 +38,9 @@ def buildContainer() {
 
 
 def pushContainer() {
-  repoName = sh(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
-  repoVersion = sh(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
+  repoName = silentSH(returnStdout: true, script: "yq -r '.name' helm/rl-eu-pgbouncer/Chart.yaml").trim().toLowerCase()
+  repoVersion = silentSH(returnStdout: true, script: "yq -r '.version' helm/rl-eu-pgbouncer/Chart.yaml").trim()
+
   sh "echo y | gcloud auth configure-docker"
   sh "docker push gcr.io/rl-global-eu/"+ repoName + ":" + repoVersion
 }
