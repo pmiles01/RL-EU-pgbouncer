@@ -1,15 +1,18 @@
 def verboseSH(cmd) {
   println (cmd)
   sh('#!/bin/sh -e\n' + cmd)
+  return
 }
 
 def silentSH(cmd) {
   sh('#!/bin/sh -e\n' + cmd)
+  return
 }
 
 def deployHelmChart(environment) {
   sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl \"helm init --upgrade --stable-repo-url https://rl-helm.storage.googleapis.com\""
   sh "docker -v \${WORKSPACE}/kubeconfig/" + environment + ":/root/.kube/config -v \${WORKSPACE}/helm_config:/root/.helm dtzar/helm-kubectl helm install stable/rl-eu-pgbouncer"
+  return
 }
 
 def packageHelmChart() {
@@ -23,12 +26,14 @@ def packageHelmChart() {
   sh "echo 'gsutil -m rsync /helm_repo gs://rl-helm' >> \${WORKSPACE}/sync_repo.sh"
   sh "chmod 755 \${WORKSPACE}/sync_repo.sh"
   sh "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/sync_repo.sh:/sync_repo.sh -v \${WORKSPACE}/helm_repo:/helm_repo google/cloud-sdk /sync_repo.sh"
+  return
 }
 
 def buildContainer(repoName, repoVersion) {
   sh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
   sh "docker build . -t "+ repoName + ":"+ repoVersion
   sh "docker tag ${repoName} gcr.io/rl-global-eu/"+ repoName + ":" + repoVerson
+  return
 }
 
 pipeline {
