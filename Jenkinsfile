@@ -34,7 +34,7 @@ pipeline {
     }
     stage('Package and Push Helm Chart') {
       steps {
-        sh "ln -s ../helm helm/\${repoName}"
+        sh "ln -s ../helm helm/\${repoName} || true"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm init --client-only"
         sh "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm package \${repoName}"
         sh "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
