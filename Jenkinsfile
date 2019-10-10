@@ -32,7 +32,7 @@ def packageHelmChart() {
 def buildContainer(repoName, repoVersion) {
   sh "gcloud auth activate-service-account --project=rl-global-eu --key-file=/var/lib/jenkins/.gcp/key.json"
   sh "docker build . -t "+ repoName + ":"+ repoVersion
-  sh "docker tag ${repoName} gcr.io/rl-global-eu/"+ repoName + ":" + repoVerson
+  sh "docker tag " + repoName + " gcr.io/rl-global-eu/"+ repoName + ":" + repoVerson
   return
 }
 
