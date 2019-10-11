@@ -30,7 +30,7 @@ def packageHelmChart() {
 
 
   silentSH "docker run --rm -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm package --destination /helm_repo /apps/\${repoName}"
-  silentSH "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -e GOOGLE_APPLICATION_CREDENTIALS=/key.json dtzar/helm-kubectl helm gcs push /helm_repo/" + repoName + "-" + repoVersion + ".tgz stable"
+  silentSH "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -e GOOGLE_APPLICATION_CREDENTIALS=/key.json dtzar/helm-kubectl helm gcs push /helm_repo/" + repoName + "-" + repoVersion + ".tgz stable --force"
 
 //  silentSH "echo '#!/bin/sh' > \${WORKSPACE}/sync_repo.sh"
 //  silentSH "echo 'gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json' >> \${WORKSPACE}/sync_repo.sh"
