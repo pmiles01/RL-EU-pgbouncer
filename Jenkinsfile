@@ -29,7 +29,6 @@ def packageHelmChart() {
 
 
   silentSH "docker run --rm -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm package --destination /helm_repo /apps/\${repoName}"
-#### HERE
   silentSH "docker run --rm -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm gcs push " + repoName + "-" + repoVersion + ".tgz stable"
 
 //  silentSH "echo '#!/bin/sh' > \${WORKSPACE}/sync_repo.sh"
