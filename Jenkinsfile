@@ -22,7 +22,7 @@ def packageHelmChart() {
   // Instance the native GCS plugin for helm
   silentSH "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm plugin install https://github.com/hayorov/helm-gcs || true"
 
-  silentSH "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm gcs init gs://rl-helm"
+  silentSH "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -e GOOGLE_APPLICATION_CREDENTIALS=/key.json dtzar/helm-kubectl helm gcs init gs://rl-helm"
   silentSH "docker run --rm -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm gcs repo add stable g://rl-heml"
 
   silentSH "mkdir -p \${WORKSPACE}/helm_repo && cp \${WORKSPACE}/helm/\${repoName}-\${repoVersion}.tgz \${WORKSPACE}/helm_repo"
@@ -30,7 +30,7 @@ def packageHelmChart() {
 
 
   silentSH "docker run --rm -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm package --destination /helm_repo /apps/\${repoName}"
-  silentSH "docker run --rm -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm dtzar/helm-kubectl helm gcs push " + repoName + "-" + repoVersion + ".tgz stable"
+  silentSH "docker run --rm -v /var/lib/jenkins/.gcp/key.json:/key.json -v \${WORKSPACE}/helm_repo:/helm_repo -v \${WORKSPACE}/helm:/apps -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -e GOOGLE_APPLICATION_CREDENTIALS=/key.json dtzar/helm-kubectl helm gcs push " + repoName + "-" + repoVersion + ".tgz stable"
 
 //  silentSH "echo '#!/bin/sh' > \${WORKSPACE}/sync_repo.sh"
 //  silentSH "echo 'gcloud auth activate-service-account --project=rl-global-eu --key-file=/key.json' >> \${WORKSPACE}/sync_repo.sh"
