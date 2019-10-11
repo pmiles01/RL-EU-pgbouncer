@@ -5,7 +5,8 @@ def verboseSH(cmd) {
 }
 
 def silentSH(cmd) {
-  sh('#!/bin/sh \n' + cmd)
+  println (cmd)
+  sh('#!/bin/sh -e\n' + cmd)
   return
 }
 
